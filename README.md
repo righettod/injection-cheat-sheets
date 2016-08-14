@@ -149,7 +149,7 @@ Use **XPath Variable Resolver** in order to prevent injection.
  */
 public class SimpleVariableResolver implements XPathVariableResolver {
 
-    private static final Map<QName, Object> vars = new HashMap<QName, Object>();
+    private final Map<QName, Object> vars = new HashMap<QName, Object>();
 
     /**
      * External methods to add parameter
@@ -200,7 +200,9 @@ XPathExpression xPathExpression = xpath.compile("//book[@id=$bookId]");
 Object nodes = xPathExpression.evaluate(doc, XPathConstants.NODESET);
 NodeList nodesList = (NodeList) nodes;
 Assert.assertNotNull(nodesList);
-Assert.assertEquals(1,nodesList.getLength());
+Assert.assertEquals(1, nodesList.getLength());
+Element book = (Element)nodesList.item(0);
+Assert.assertTrue(book.getTextContent().contains("Ralls, Kim"));
 ```
 
 ### References

@@ -3,6 +3,7 @@ package eu.righettod.poc;
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXParseException;
 
@@ -96,5 +97,7 @@ public class CodeSamplesTest {
         NodeList nodesList = (NodeList) nodes;
         Assert.assertNotNull(nodesList);
         Assert.assertEquals(1, nodesList.getLength());
+        Element book = (Element) nodesList.item(0);
+        Assert.assertTrue(book.getTextContent().contains("Ralls, Kim"));
     }
 }

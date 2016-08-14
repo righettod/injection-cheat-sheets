@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class SimpleVariableResolver implements XPathVariableResolver {
 
-    private static final Map<QName, Object> vars = new HashMap<QName, Object>();
+    private final Map<QName, Object> vars = new HashMap<QName, Object>();
 
     /**
      * External methods to add parameter
