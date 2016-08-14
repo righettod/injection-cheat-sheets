@@ -15,11 +15,27 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.net.InetAddress;
 
 /**
  * Contains all samples of code used into the README.md file.
  */
 public class CodeSamplesTest {
+
+    /**
+     * Sample for Operating System command injection prevention
+     *
+     * @throws Exception Global error
+     */
+    @Test
+    public void testSampleOSCmd() throws Exception {
+        /* The context taken is, for example, to perform a PING against a computer.
+        * The prevention is to use the feature provided by the Java API instead of building
+        * a system command as String and execute it */
+        InetAddress host = InetAddress.getByName("localhost");
+        Assert.assertTrue(host.isReachable(5000));
+    }
+
 
     /**
      * Sample for XML External Entity attack prevention
@@ -70,7 +86,7 @@ public class CodeSamplesTest {
      * @throws Exception Global error
      */
     @Test
-    public void testSampleXPath() throws Exception {
+    public void testSampleXPathQuery() throws Exception {
         /*Create a XML document builder factory*/
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
