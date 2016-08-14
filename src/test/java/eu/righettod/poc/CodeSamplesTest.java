@@ -78,7 +78,8 @@ public class CodeSamplesTest {
         /* Encode HTML Tag*/
         safeOutput = StringEscapeUtils.escapeHtml3(safeOutput);
         safeOutput = StringEscapeUtils.escapeHtml4(safeOutput);
-        String finalSafeOutputExpected = "You &amp;lt;p&amp;gt;user login&amp;lt;/p&amp;gt; is &amp;lt;strong&amp;gt;owasp-user01&amp;lt;/strong&amp;gt;";
+        String finalSafeOutputExpected = "You &amp;lt;p&amp;gt;user login&amp;lt;/p&amp;gt; is ";
+        finalSafeOutputExpected += "&amp;lt;strong&amp;gt;owasp-user01&amp;lt;/strong&amp;gt;";
         Assert.assertEquals(finalSafeOutputExpected, safeOutput);
     }
 
