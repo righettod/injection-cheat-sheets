@@ -92,7 +92,8 @@ Disable to resolution of the External Entity in the parser instance to prevent i
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
 /*Disable External Entity resolution for differents cases*/
-// This is the PRIMARY defense. If DTDs (doctypes) are disallowed, almost all XML entity attacks are prevented
+// This is the PRIMARY defense. If DTDs (doctypes) are disallowed, 
+// almost all XML entity attacks are prevented
 // Xerces 2 only - http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
 String feature = "http://apache.org/xml/features/disallow-doctype-decl";
 dbf.setFeature(feature, true);
