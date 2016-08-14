@@ -21,7 +21,7 @@ It's a work in progress in order to create a cheat sheets about Injection topic 
 
 The following point can be applied, in a general way, to prevent **Injection** issue:
 
-1. When possible, apply *Input Validation* on user input using whitelist approach.
+1. Apply *Input Validation* (using whitelist approach) combined with *Output Sanitizing+Escaping* on user input/output.
 2. If you need to interact with system, try to use API features provided by your technology stack (Java / .Net / PHP...) instead of building command.
 
 # Specific Injection types
