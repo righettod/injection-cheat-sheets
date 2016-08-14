@@ -87,7 +87,7 @@ Disable to resolution of the External Entity in the parser instance to prevent i
 
 ### Example
 
-```
+```java
 /*Create a XML document builder factory*/
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -114,13 +114,13 @@ dbf.setFeature(feature, false);
 feature = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
 dbf.setFeature(feature, false);
 
-// and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks" (see reference below)
+// and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
 dbf.setXIncludeAware(false);
 dbf.setExpandEntityReferences(false);
 
 /*Load XML file*/
 DocumentBuilder builder = dbf.newDocumentBuilder();
-//Here an org.xml.sax.SAXParseException will be throws because the sample XML contains a External Entity....
+//Here an org.xml.sax.SAXParseException will be throws because the XML contains a External Entity.
 builder.parse(new File("src/test/resources/SampleXXE.xml"));
 ```
 
@@ -138,7 +138,7 @@ Use **XPath Variable Resolver** in order to prevent injection.
 
 *Variable Resolver* implementation
 
-```
+```java
 /**
  * Resolver in order to define parameter for XPATH expression.
  *
@@ -170,7 +170,7 @@ public class SimpleVariableResolver implements XPathVariableResolver {
 
 Code using it to perform XPath query
 
-```
+```java
 /*Create a XML document builder factory*/
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
