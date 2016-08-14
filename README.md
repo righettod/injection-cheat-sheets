@@ -4,9 +4,12 @@ This document has for objective to provide some tips to handle **Injection** int
 
 It's a work in progress in order to create a cheat sheets about Injection topic with OWASP Java folks.
 
-TODO:
-* Add code for all
-* Add NoSQL / LDAP
+# Roadmap
+
+* Add code samples for all specific injection
+* Add NoSQL / LDAP case
+
+*Code of samples are implemented using Maven test cases.*
 
 # What is Injection ?
 
