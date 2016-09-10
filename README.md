@@ -7,7 +7,7 @@ It's a work in progress in order to create a cheat sheets about Injection topic 
 # Roadmap
 
 * Add code samples for all specific injection
-* Add NoSQL / LDAP case
+* Add JPA / LDAP case
 
 *Code of samples are implemented using Maven test cases.*
 
