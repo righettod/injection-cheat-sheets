@@ -354,7 +354,7 @@ It's also important to not use string concatenation to build API call expression
 String userInput = "Brooklyn";
 
 /* First ensure that the input do no contains any special characters for the current NoSQL DB call API, 
-here they are: ' " \ ; { } 
+here they are: ' " \ ; { } $
 */
 //Avoid regexp this time in order to made validation code more easy to read and understand...
 ArrayList<String> specialCharsList = new ArrayList<String>() {{
@@ -364,6 +364,7 @@ ArrayList<String> specialCharsList = new ArrayList<String>() {{
     add(";");
     add("{");
     add("}");
+    add("$");
 }};
 specialCharsList.forEach(specChar -> Assert.assertFalse(userInput.contains(specChar)));
 //Add also a check on input max size
