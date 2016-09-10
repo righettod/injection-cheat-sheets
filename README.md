@@ -327,8 +327,11 @@ Assert.assertEquals(finalSafeOutputExpected, safeOutput);
 ### References
 
 https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)
+
 https://github.com/owasp/java-html-sanitizer
+
 https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+
 https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/org/apache/commons/lang3/StringEscapeUtils.html
 
 ## NoSQL
@@ -389,5 +392,7 @@ try(MongoClient mongoClient = new MongoClient()){
 ### References
 
 https://www.owasp.org/index.php/Testing_for_NoSQL_injection
+
 https://ckarande.gitbooks.io/owasp-nodegoat-tutorial/content/tutorial/a1_-_sql_and_nosql_injection.html
+
 https://arxiv.org/ftp/arxiv/papers/1506/1506.04082.pdf
