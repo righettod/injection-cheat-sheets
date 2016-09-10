@@ -17,5 +17,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20160628.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:guava:19.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.mongodb:mongo-java-driver:3.3.0" level="project" />
   </component>
 </module>

@@ -1,7 +1,12 @@
 package eu.righettod.poc;
 
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoDatabase;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.conversions.Bson;
 import org.junit.Assert;
 import org.junit.Test;
 import org.owasp.html.HtmlPolicyBuilder;
@@ -28,10 +33,60 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.mongodb.client.model.Filters.eq;
+
 /**
  * Contains all samples of code used into the README.md file.
  */
 public class CodeSamplesTest {
+
+    /**
+     * Sample for NoSQL injection prevention, here using MongoDB as target NoSQL DB.
+     * <p>
+     * Use the following link to setup the test database: https://docs.mongodb.com/getting-started/java/import-data/#procedure
+     *
+     * @throws Exception Global error
+     */
+    @Test
+    public void testSampleNoSQLInjection() {
+
+        /* Here use MongoDB as target NoSQL DB */
+        String userInput = "Brooklyn";
+
+        /* First ensure that the input do no contains any special characters for the current NoSQL DB call API, here they are: ' " \ ; { } */
+        //Avoid regexp this time in order to made validation code more easy to read and understand...
+        ArrayList<String> specialCharsList = new ArrayList<String>() {{
+            add("'");
+            add("\"");
+            add("\\");
+            add(";");
+            add("{");
+            add("}");
+        }};
+        specialCharsList.forEach(specChar -> Assert.assertFalse(userInput.contains(specChar)));
+        //Add also a check on input max size
+        Assert.assertTrue(userInput.length() <= 50);
+
+        /* Then perform query on database using API to build expression */
+        //Connect to the local MongoDB instance
+        try (MongoClient mongoClient = new MongoClient()) {
+            MongoDatabase db = mongoClient.getDatabase("test");
+            //Use API query builder to create call expression
+            //Create expression
+            Bson expression = eq("borough", userInput);
+            //Perform call
+            FindIterable<org.bson.Document> restaurants = db.getCollection("restaurants").find(expression);
+            //Verify result consistency
+            restaurants.forEach(new Block<org.bson.Document>() {
+                @Override
+                public void apply(final org.bson.Document doc) {
+                    String restBorough = (String) doc.get("borough");
+                    Assert.assertTrue("Brooklyn".equals(restBorough));
+                }
+            });
+        }
+
+    }
 
     /**
      * Sample for HTML/JS/CSS injection prevention.

@@ -330,3 +330,62 @@ https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)
 https://github.com/owasp/java-html-sanitizer
 https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
 https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/org/apache/commons/lang3/StringEscapeUtils.html
+
+## NoSQL
+
+### Symptom
+
+Injection of this type occur when the application use untrusted user input to build a NoSQL API call expression.
+
+### How to prevent
+
+As there many NoSQL database system and each one use a API for call, it's important to ensure that user input received 
+and used to build the API call expression do not contains any character that have a special meaning in the target API syntax.
+This in order to avoid that it will be used to escape the initial call expression in order to create another one based on crafted user input.
+It's also important to not use string concatenation to build API call expression but use the API to create the expression.
+
+### Example
+
+```java
+ /* Here use MongoDB as target NoSQL DB */
+String userInput = "Brooklyn";
+
+/* First ensure that the input do no contains any special characters for the current NoSQL DB call API, here they are: ' " \ ; { } */
+//Avoid regexp this time in order to made validation code more easy to read and understand...
+ArrayList<String> specialCharsList = new ArrayList<String>() {{
+    add("'");
+    add("\"");
+    add("\\");
+    add(";");
+    add("{");
+    add("}");
+}};
+specialCharsList.forEach(specChar -> Assert.assertFalse(userInput.contains(specChar)));
+//Add also a check on input max size
+Assert.assertTrue(userInput.length() <= 50);
+
+/* Then perform query on database using API to build expression */
+//Connect to the local MongoDB instance
+try(MongoClient mongoClient = new MongoClient()){
+    MongoDatabase db = mongoClient.getDatabase("test");
+    //Use API query builder to create call expression
+    //Create expression
+    Bson expression = eq("borough", userInput);
+    //Perform call
+    FindIterable<org.bson.Document> restaurants = db.getCollection("restaurants").find(expression);
+    //Verify result consistency
+    restaurants.forEach(new Block<org.bson.Document>() {
+        @Override
+        public void apply(final org.bson.Document doc) {
+            String restBorough = (String)doc.get("borough");
+            Assert.assertTrue("Brooklyn".equals(restBorough));
+        }
+    });
+}
+```
+
+### References
+
+https://www.owasp.org/index.php/Testing_for_NoSQL_injection
+https://ckarande.gitbooks.io/owasp-nodegoat-tutorial/content/tutorial/a1_-_sql_and_nosql_injection.html
+https://arxiv.org/ftp/arxiv/papers/1506/1506.04082.pdf
