@@ -1,12 +1,13 @@
 # Introduction
 
-This document has for objective to provide some tips to handle **Injection** into application code.
+This document has for objective to provide some tips to handle **Injection** into Java application code.
 
-It's a work in progress in order to create a cheat sheets about Injection topic with OWASP Java folks.
+It's a work in progress in order to create a cheatsheet about Injection topic with OWASP Java folks.
+
+Cheatsheet name will be **Stopping injection in Java cheatsheet**.
 
 # Roadmap
 
-* Add code samples for all specific injection
 * Add JPA / LDAP case
 
 *Code of samples are implemented using Maven test cases.*
@@ -36,7 +37,7 @@ Injection of this type occur when the application use untrusted user input to bu
 
 ### How to prevent
 
-Use **Prepared Statement** in order to prevent injection.
+Use **Query Parameterization** in order to prevent injection.
 
 ### Example
 
