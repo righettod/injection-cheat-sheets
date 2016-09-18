@@ -1,29 +1,9 @@
 package eu.righettod.poc;
 
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoDatabase;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bson.conversions.Bson;
-import org.junit.Assert;
-import org.junit.Test;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.PolicyFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXParseException;
+import static com.mongodb.client.model.Filters.eq;
 
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,13 +13,72 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.mongodb.client.model.Filters.eq;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.conversions.Bson;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXParseException;
+
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoDatabase;
+
+import de.flapdoodle.embed.mongo.MongodExecutable;
+import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.distribution.Version;
 
 /**
  * Contains all samples of code used into the README.md file.
  */
 public class CodeSamplesTest {
 
+	private static MongodExecutable mongodExecutable = null;
+	
+	@BeforeClass
+	public static void beforeTest() {
+		MongodStarter starter = MongodStarter.getDefaultInstance();
+
+	    int port = 27017;
+	    IMongodConfig mongodConfig;
+		try {
+			mongodConfig = new MongodConfigBuilder()
+			    .version(Version.Main.PRODUCTION)
+			    .net(new Net("127.0.0.1", port, false))
+			    .build();
+	        mongodExecutable = starter.prepare(mongodConfig);
+	        /*MongodProcess mongod = */mongodExecutable.start();
+		} catch (IOException e) {
+			Assert.assertTrue(e.getMessage(), true);
+		}
+
+	}
+	
+	@AfterClass
+	public static void afterTest() {
+		if (mongodExecutable != null) {
+//			mongodExecutable.stop();
+		}
+	}
     /**
      * Sample for NoSQL injection prevention, here using MongoDB as target NoSQL DB.
      * <p>
