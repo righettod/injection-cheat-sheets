@@ -6,6 +6,10 @@ It's a work in progress in order to create a cheatsheet about Injection topic wi
 
 Cheatsheet name will be **Stopping injection in Java cheatsheet**.
 
+# PDF version of the cheatseet
+
+The [site](https://cloudconvert.com/website-to-pdf) can used to convert this online markdown file to a PDF.
+
 # Roadmap
 
 * Add JPA / LDAP case
