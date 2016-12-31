@@ -1,9 +1,32 @@
 package eu.righettod.poc;
 
-import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoDatabase;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.conversions.Bson;
+import org.junit.Assert;
+import org.junit.Test;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXParseException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 import java.io.File;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,72 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bson.conversions.Bson;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.PolicyFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXParseException;
-
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoDatabase;
-
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
+import static com.mongodb.client.model.Filters.eq;
 
 /**
  * Contains all samples of code used into the README.md file.
  */
 public class CodeSamplesTest {
 
-	private static MongodExecutable mongodExecutable = null;
-	
-	@BeforeClass
-	public static void beforeTest() {
-		MongodStarter starter = MongodStarter.getDefaultInstance();
-
-	    int port = 27017;
-	    IMongodConfig mongodConfig;
-		try {
-			mongodConfig = new MongodConfigBuilder()
-			    .version(Version.Main.PRODUCTION)
-			    .net(new Net("127.0.0.1", port, false))
-			    .build();
-	        mongodExecutable = starter.prepare(mongodConfig);
-	        /*MongodProcess mongod = */mongodExecutable.start();
-		} catch (IOException e) {
-			Assert.assertTrue(e.getMessage(), true);
-		}
-
-	}
-	
-	@AfterClass
-	public static void afterTest() {
-		if (mongodExecutable != null) {
-//			mongodExecutable.stop();
-		}
-	}
     /**
      * Sample for NoSQL injection prevention, here using MongoDB as target NoSQL DB.
      * <p>
@@ -334,6 +298,38 @@ public class CodeSamplesTest {
         Assert.assertEquals(1, nodesList.getLength());
         Element book = (Element) nodesList.item(0);
         Assert.assertTrue(book.getTextContent().contains("Ralls, Kim"));
+    }
+
+    /**
+     * Sample for JPA QL query injection prevention
+     */
+    @Test
+    public void testSampleJPAQLQuery() throws Exception {
+        EntityManager entityManager = null;
+        try {
+            /* Get a ref on EntityManager to access DB */
+            entityManager = Persistence.createEntityManagerFactory("testJPA").createEntityManager();
+
+            /* Define parametrized query prototype using named parameter to enhance readability */
+            String queryPrototype = "select c from Color c where c.friendlyName = :colorName";
+
+            /* Create the query, set parameter and execute the query */
+            Query queryObject = entityManager.createQuery(queryPrototype);
+            Color c = (Color) queryObject.setParameter("colorName", "yellow").getSingleResult();
+
+            /*Ensure the result*/
+            Assert.assertNotNull(c);
+            Assert.assertEquals(c.getFriendlyName(), "yellow");
+            Assert.assertEquals(c.getRed(), 213);
+            Assert.assertEquals(c.getGreen(), 242);
+            Assert.assertEquals(c.getBlue(), 26);
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+
+
     }
 
 }

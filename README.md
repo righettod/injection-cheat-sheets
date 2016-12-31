@@ -6,15 +6,11 @@ It's a work in progress in order to create a cheatsheet about Injection topic wi
 
 Cheatsheet name will be **Stopping injection in Java cheatsheet**.
 
+*Code of samples are implemented using Maven test cases.*
+
 # PDF version of the cheatseet
 
 The [site](https://cloudconvert.com/website-to-pdf) can used to convert this online markdown file to a PDF.
-
-# Roadmap
-
-* Add JPA / LDAP case
-
-*Code of samples are implemented using Maven test cases.*
 
 # What is Injection ?
 
@@ -28,6 +24,8 @@ The following point can be applied, in a general way, to prevent **Injection** i
 
 1. Apply *Input Validation* (using whitelist approach) combined with *Output Sanitizing+Escaping* on user input/output.
 2. If you need to interact with system, try to use API features provided by your technology stack (Java / .Net / PHP...) instead of building command.
+
+Additional advices are provided on this [cheatsheet](https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet).
 
 # Specific Injection types
 
@@ -108,15 +106,43 @@ https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet
 
 ### Symptom
 
-Injection of this type occur when the application use untrusted user input to build a JPA query using a String and execute it.
+Injection of this type occur when the application use untrusted user input to build a JPA query using a String and execute it. It's quite similar to SQL injection but here the altered language is not SQL but JPA QL.
 
 ### How to prevent
 
-Use **Java Persistence Query Language** in order to prevent injection.
+Use Java Persistence Query Language **Query Parameterization** in order to prevent injection.
 
 ### Example
 
-TODO
+```java
+EntityManager entityManager = null;
+try {
+    /* Get a ref on EntityManager to access DB */
+    entityManager = Persistence.createEntityManagerFactory("testJPA").createEntityManager();
+
+    /* Define parametrized query prototype using named parameter to enhance readability */
+    String queryPrototype = "select c from Color c where c.friendlyName = :colorName";
+
+    /* Create the query, set the named parameter and execute the query */
+    Query queryObject = entityManager.createQuery(queryPrototype);
+    Color c = (Color) queryObject.setParameter("colorName", "yellow").getSingleResult();
+
+    /* Ensure that the object obtained is the right one */
+    Assert.assertNotNull(c);
+    Assert.assertEquals(c.getFriendlyName(), "yellow");
+    Assert.assertEquals(c.getRed(), 213);
+    Assert.assertEquals(c.getGreen(), 242);
+    Assert.assertEquals(c.getBlue(), 26);
+} finally {
+    if (entityManager != null && entityManager.isOpen()) {
+        entityManager.close();
+    }
+}
+```
+
+### References
+
+https://software-security.sans.org/developer-how-to/fix-sql-injection-in-java-persistence-api-jpa
 
 ## Operating System
 
@@ -338,6 +364,10 @@ https://github.com/owasp/java-html-sanitizer
 https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
 
 https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/org/apache/commons/lang3/StringEscapeUtils.html
+
+## LDAP
+
+A dedicated [cheatsheet](https://www.owasp.org/index.php/LDAP_Injection_Prevention_Cheat_Sheet) has been created by Jim Manico.
 
 ## NoSQL
 
