@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c852f086-a8ac-4762-8745-d48b132baa8c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/eu/righettod/poc/Color.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/owasp-injection-cheat-sheets.iml" afterPath="$PROJECT_DIR$/owasp-injection-cheat-sheets.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/eu/righettod/poc/CodeSamplesTest.java" afterPath="$PROJECT_DIR$/src/test/java/eu/righettod/poc/CodeSamplesTest.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_19_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_21_0_rc1.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/sql/sample_db_setup.sql" afterPath="$PROJECT_DIR$/src/test/db/sample_db_setup.sql" />
-    </list>
+    <list default="true" id="c852f086-a8ac-4762-8745-d48b132baa8c" name="Default" comment="" />
     <ignored path="owasp-injection-cheat-sheets.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
