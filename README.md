@@ -12,6 +12,10 @@ Cheatsheet name will be **Stopping injection in Java cheatsheet**.
 
 The [site](https://cloudconvert.com/website-to-pdf) can used to convert this online markdown file to a PDF.
 
+# Travis-CI sample codes testing state
+
+[![Build Status](https://travis-ci.org/righettod/injection-cheat-sheets.svg?branch=master)](https://travis-ci.org/righettod/injection-cheat-sheets)
+
 # What is Injection ?
 
 [Injection](https://www.owasp.org/index.php/Top_10_2013-A1-Injection) in OWASP Top 10 is defined as following:
@@ -94,7 +98,7 @@ try (Connection con = DriverManager.getConnection(jdbcUrl)) {
         deletedRecordCount = pStatement.executeUpdate();
     }
     Assert.assertEquals(1, deletedRecordCount);
-    
+
 }
 ```
 
@@ -185,7 +189,7 @@ Disable to resolution of the External Entity in the parser instance to prevent i
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
 /*Disable External Entity resolution for differents cases*/
-// This is the PRIMARY defense. If DTDs (doctypes) are disallowed, 
+// This is the PRIMARY defense. If DTDs (doctypes) are disallowed,
 // almost all XML entity attacks are prevented
 // Xerces 2 only - http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl
 String feature = "http://apache.org/xml/features/disallow-doctype-decl";
@@ -377,7 +381,7 @@ Injection of this type occur when the application use untrusted user input to bu
 
 ### How to prevent
 
-As there many NoSQL database system and each one use a API for call, it's important to ensure that user input received 
+As there many NoSQL database system and each one use a API for call, it's important to ensure that user input received
 and used to build the API call expression do not contains any character that have a special meaning in the target API syntax.
 This in order to avoid that it will be used to escape the initial call expression in order to create another one based on crafted user input.
 It's also important to not use string concatenation to build API call expression but use the API to create the expression.
@@ -388,7 +392,7 @@ It's also important to not use string concatenation to build API call expression
  /* Here use MongoDB as target NoSQL DB */
 String userInput = "Brooklyn";
 
-/* First ensure that the input do no contains any special characters for the current NoSQL DB call API, 
+/* First ensure that the input do no contains any special characters for the current NoSQL DB call API,
 here they are: ' " \ ; { } $
 */
 //Avoid regexp this time in order to made validation code more easy to read and understand...
