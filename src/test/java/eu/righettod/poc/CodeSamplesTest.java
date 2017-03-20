@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
+import org.owasp.encoder.Encode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -122,7 +123,7 @@ public class CodeSamplesTest {
         OUTPUT WAY: Send data to user
         Here we escape + sanitize any data sent to user
         Use the OWASP Java HTML Sanitizer API to handle sanitizing
-        Use the API COMMONS LANG v3 to help in HTML tag encoding (escaping)
+        Use the OWASP Java Encoder API to handle HTML tag encoding (escaping)
          */
 
         String outputToUser = "You <p>user login</p> is <strong>owasp-user01</strong>";
@@ -135,10 +136,8 @@ public class CodeSamplesTest {
         String safeOutput = policy.sanitize(outputToUser);
 
         /* Encode HTML Tag*/
-        safeOutput = StringEscapeUtils.escapeHtml3(safeOutput);
-        safeOutput = StringEscapeUtils.escapeHtml4(safeOutput);
-        String finalSafeOutputExpected = "You &amp;lt;p&amp;gt;user login&amp;lt;/p&amp;gt; is ";
-        finalSafeOutputExpected += "&amp;lt;strong&amp;gt;owasp-user01&amp;lt;/strong&amp;gt;";
+        safeOutput = Encode.forHtml(safeOutput);
+        String finalSafeOutputExpected = "You &lt;p&gt;user login&lt;/p&gt; is &lt;strong&gt;owasp-user01&lt;/strong&gt;";
         Assert.assertEquals(finalSafeOutputExpected, safeOutput);
     }
 
