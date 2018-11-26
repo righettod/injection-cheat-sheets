@@ -342,14 +342,14 @@ public class CodeSamplesTest {
         Path logFile = Paths.get("App.log");
         Logger logger = LogManager.getLogger(CodeSamplesTest.class);
         String padding = StringUtils.repeat("X", 10000);
-        String payload = "MY\r\nSPLITTED\n\rPAYLOAD  ==>  \n\r<script>alert(1)</script><img src=\"#\" onload='javascript:test()'>\n\n" + padding;
+        String payload = "\n\rMY\r\nSPLITTED\n\rPAYLOAD\n\r" + padding;
         /* Log the payload */
         logger.info(payload);
         /* Ensure that the payload is neutralised */
         List<String> logLines = Files.readAllLines(logFile);
         Assert.assertEquals(1, logLines.size());
         String log = logLines.get(0);
-        String expected = "MY\\r\\nSPLITTED\\n\\rPAYLOAD  ==&gt;  \\n\\r&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&lt;img src=&quot;#&quot; onload=&apos;javascript:test()&apos;&gt;\\n\\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+        String expected = "\\n\\rMY\\r\\nSPLITTED\\n\\rPAYLOAD\\n\\rXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
         Assert.assertEquals(expected, log);
     }
 

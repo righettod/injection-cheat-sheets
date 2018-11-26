@@ -5,7 +5,7 @@
     <Appenders>
         <File name="File" fileName="App.log" ignoreExceptions="false" append="false" immediateFlush="true">
             <PatternLayout>
-                <Pattern>%encode{%.-160m}%n</Pattern>
+                <Pattern>%encode{%.-150m}{CRLF}%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>
