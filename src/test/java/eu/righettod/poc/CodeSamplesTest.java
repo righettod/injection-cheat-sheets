@@ -1,12 +1,11 @@
 package eu.righettod.poc;
 
+
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bson.conversions.Bson;
 import org.junit.Assert;
 import org.junit.Test;
@@ -332,15 +331,15 @@ public class CodeSamplesTest {
     }
 
     /**
-     * Sample for Log injection prevention.
+     * Sample for Log injection prevention with LOG4J V2 API.
      *
      * @throws Exception Global error
      */
     @Test
-    public void testSampleLogInjection() throws Exception {
+    public void testSampleLogInjectionLOG4JV2() throws Exception {
         /* Prepare the logger and the payload */
         Path logFile = Paths.get("App.log");
-        Logger logger = LogManager.getLogger(CodeSamplesTest.class);
+        org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(CodeSamplesTest.class);
         String padding = StringUtils.repeat("X", 10000);
         String payload = "\n\rMY\r\nSPLITTED\n\rPAYLOAD\n\r" + padding;
         /* Log the payload */
@@ -352,5 +351,6 @@ public class CodeSamplesTest {
         String expected = "\\n\\rMY\\r\\nSPLITTED\\n\\rPAYLOAD\\n\\rXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
         Assert.assertEquals(expected, log);
     }
+
 
 }
