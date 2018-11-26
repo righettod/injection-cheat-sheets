@@ -4,14 +4,15 @@ import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.conversions.Bson;
 import org.junit.Assert;
 import org.junit.Test;
+import org.owasp.encoder.Encode;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
-import org.owasp.encoder.Encode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,6 +30,9 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -48,8 +52,6 @@ public class CodeSamplesTest {
      * Sample for NoSQL injection prevention, here using MongoDB as target NoSQL DB.
      * <p>
      * Use the following link to setup the test database: https://docs.mongodb.com/getting-started/java/import-data/#procedure
-     *
-     * @throws Exception Global error
      */
     @Test
     public void testSampleNoSQLInjection() {
@@ -95,8 +97,6 @@ public class CodeSamplesTest {
 
     /**
      * Sample for HTML/JS/CSS injection prevention.
-     *
-     * @throws Exception Global error
      */
     @Test
     public void testSampleHTMLCSSJSInjection() {
@@ -182,7 +182,7 @@ public class CodeSamplesTest {
             }
             Assert.assertEquals(1, insertedRecordCount);
 
-           /* Sample C: Update data using Prepared Statement*/
+            /* Sample C: Update data using Prepared Statement*/
             query = "update color set blue = ? where friendly_name = ?";
             int updatedRecordCount;
             try (PreparedStatement pStatement = con.prepareStatement(query)) {
@@ -192,7 +192,7 @@ public class CodeSamplesTest {
             }
             Assert.assertEquals(1, updatedRecordCount);
 
-           /* Sample D: Delete data using Prepared Statement*/
+            /* Sample D: Delete data using Prepared Statement*/
             query = "delete from color where friendly_name = ?";
             int deletedRecordCount;
             try (PreparedStatement pStatement = con.prepareStatement(query)) {
@@ -212,8 +212,8 @@ public class CodeSamplesTest {
     @Test
     public void testSampleOSCmd() throws Exception {
         /* The context taken is, for example, to perform a PING against a computer.
-        * The prevention is to use the feature provided by the Java API instead of building
-        * a system command as String and execute it */
+         * The prevention is to use the feature provided by the Java API instead of building
+         * a system command as String and execute it */
         InetAddress host = InetAddress.getByName("localhost");
         Assert.assertTrue(host.isReachable(5000));
     }
@@ -300,7 +300,9 @@ public class CodeSamplesTest {
     }
 
     /**
-     * Sample for JPA QL query injection prevention
+     * Sample for JPA QL query injection prevention.
+     *
+     * @throws Exception Global error
      */
     @Test
     public void testSampleJPAQLQuery() throws Exception {
@@ -327,8 +329,28 @@ public class CodeSamplesTest {
                 entityManager.close();
             }
         }
+    }
 
-
+    /**
+     * Sample for Log injection prevention.
+     *
+     * @throws Exception Global error
+     */
+    @Test
+    public void testSampleLogInjection() throws Exception {
+        /* Prepare the logger and the payload */
+        Path logFile = Paths.get("App.log");
+        Logger logger = LogManager.getLogger(CodeSamplesTest.class);
+        String padding = StringUtils.repeat("X", 10000);
+        String payload = "MY\r\nSPLITTED\n\rPAYLOAD  ==>  \n\r<script>alert(1)</script><img src=\"#\" onload='javascript:test()'>\n\n" + padding;
+        /* Log the payload */
+        logger.info(payload);
+        /* Ensure that the payload is neutralised */
+        List<String> logLines = Files.readAllLines(logFile);
+        Assert.assertEquals(1, logLines.size());
+        String log = logLines.get(0);
+        String expected = "MY\\r\\nSPLITTED\\n\\rPAYLOAD  ==&gt;  \\n\\r&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&lt;img src=&quot;#&quot; onload=&apos;javascript:test()&apos;&gt;\\n\\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+        Assert.assertEquals(expected, log);
     }
 
 }
