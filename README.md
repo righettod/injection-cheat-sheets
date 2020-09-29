@@ -6,6 +6,6 @@ It's the code repository of the OWASP cheatsheet [Injection Prevention Cheat She
 
 *Code of samples are implemented using Maven test cases.*
 
-# Travis-CI sample codes testing state
+# GH action sample codes testing state
 
-[![Build Status](https://travis-ci.org/righettod/injection-cheat-sheets.svg?branch=master)](https://travis-ci.org/righettod/injection-cheat-sheets)
+![Java CI with Maven](https://github.com/righettod/injection-cheat-sheets/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
